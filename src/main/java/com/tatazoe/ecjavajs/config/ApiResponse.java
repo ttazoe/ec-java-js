@@ -19,7 +19,8 @@ public class ApiResponse {
         return message;
     }
 
-    public String getTimestamp() {
+    // 固定化できる物は get Method を定義すれば取得してくれそう。getYahoo にすると、Key が yahoo になる。
+    public String getTimeStamp() {
         return LocalDateTime.now().toString();
     }
 }
