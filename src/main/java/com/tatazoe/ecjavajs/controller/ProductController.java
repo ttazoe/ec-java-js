@@ -10,10 +10,10 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.List;
 
@@ -41,5 +41,19 @@ public class ProductController {
         Category category = optionalCategory.get();
         productService.addProduct(productDto, category);
         return new ResponseEntity<>(new ApiResponse(true, "Product has been added"), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse> updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDto productDto) {
+        if (Objects.isNull(productService.readProduct(id)))
+            return new ResponseEntity<>(new ApiResponse(false, "Product is not found"), HttpStatus.NOT_FOUND);
+
+        Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
+        if (!optionalCategory.isPresent())
+            return new ResponseEntity<>(new ApiResponse(false, "Category ID " + productDto.getCategoryId() + "is not found"), HttpStatus.NOT_FOUND);
+
+        Category category = optionalCategory.get();
+        productService.updateProduct(id, productDto, category);
+        return new ResponseEntity<>(new ApiResponse(true, "Product is updated"), HttpStatus.OK);
     }
 }
