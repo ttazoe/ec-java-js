@@ -46,11 +46,11 @@ public class ProductController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDto productDto) {
         if (Objects.isNull(productService.readProduct(id)))
-            return new ResponseEntity<>(new ApiResponse(false, "Product is not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(false, "Product Id" + id + " is not found"), HttpStatus.NOT_FOUND);
 
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
         if (!optionalCategory.isPresent())
-            return new ResponseEntity<>(new ApiResponse(false, "Category ID " + productDto.getCategoryId() + "is not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(false, "Category ID " + productDto.getCategoryId() + " is not found"), HttpStatus.NOT_FOUND);
 
         Category category = optionalCategory.get();
         productService.updateProduct(id, productDto, category);

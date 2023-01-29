@@ -43,17 +43,8 @@ public class ProductService {
     }
 
     public void updateProduct(Integer id, ProductDto newProductDto, Category category) {
-        ProductDto productDto = readProduct(id);
-
-        // Update DTO
-        productDto.setName(newProductDto.getName());
-        productDto.setDescription(newProductDto.getDescription());
-        productDto.setPrice(newProductDto.getPrice());
-        productDto.setImageURL(newProductDto.getImageURL());
-        productDto.setCategoryId(newProductDto.getCategoryId());
-
-        Product product = getProductFromDto(productDto, category);
-        product.setId(productDto.getId());
+        Product product = getProductFromDto(newProductDto,category);
+        product.setId(id);
         productRepository.save(product);
     }
 
