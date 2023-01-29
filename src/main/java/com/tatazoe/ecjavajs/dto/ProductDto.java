@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDto {
-    @JsonIgnore
     private Integer id;
     private @NotNull String name;
     private @NotNull String imageURL;
