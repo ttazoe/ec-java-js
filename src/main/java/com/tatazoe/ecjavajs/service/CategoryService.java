@@ -15,7 +15,7 @@ public class CategoryService {
 
 
     // Get services
-    public List<Category> listCategories(){
+    public List<Category> listCategories() {
         return categoryRepository.findAll();
     }
 
@@ -29,12 +29,12 @@ public class CategoryService {
     }
 
     // Post services
-    public void createCategory(Category category){
+    public void createCategory(Category category) {
         categoryRepository.save(category);
     }
 
     // Put services
-    public void updateCategory(Integer categoryId, Category newCategory){
+    public void updateCategory(Integer categoryId, Category newCategory) {
         Optional<Category> optionalCategory = readCategory(categoryId);
         Category category = optionalCategory.get();
         category.setCategoryName(newCategory.getCategoryName());
@@ -42,7 +42,6 @@ public class CategoryService {
         category.setImageUrl(newCategory.getImageUrl());
         categoryRepository.save(category);
     }
-
 
 
 }
