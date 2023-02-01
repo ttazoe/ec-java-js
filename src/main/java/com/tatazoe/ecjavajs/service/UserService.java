@@ -39,7 +39,7 @@ public class UserService {
             logger.error("hashing password failed {}");
         }
 
-        User user = new User(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), signupDto.getPassword());
+        User user = new User(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), encryptedPassword);
         try {
             userRepository.save(user);
             //user created successfully

@@ -41,6 +41,4 @@ public class AuthenticationService {
             throw new AuthenticationFailException(MessageStrings.AUTH_TOKEN_NOT_VALID);
         }
     }
-
-
 }
