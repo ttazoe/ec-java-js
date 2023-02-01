@@ -1,7 +1,11 @@
 package com.tatazoe.ecjavajs.service;
 
+import com.tatazoe.ecjavajs.config.MessageStrings;
+import com.tatazoe.ecjavajs.dto.SignInDto;
+import com.tatazoe.ecjavajs.dto.SignInResponseDto;
 import com.tatazoe.ecjavajs.dto.SignUpResponseDto;
 import com.tatazoe.ecjavajs.dto.SignupDto;
+import com.tatazoe.ecjavajs.exception.AuthenticationFailException;
 import com.tatazoe.ecjavajs.exception.CustomException;
 import com.tatazoe.ecjavajs.model.AuthenticationToken;
 import com.tatazoe.ecjavajs.model.User;
@@ -53,6 +57,34 @@ public class UserService {
             throw new CustomException(e.getMessage());
         }
     }
+
+
+    public SignInResponseDto signIn(SignInDto signInDto) throws AuthenticationFailException, CustomException {
+        // User で検索して
+        User currentUser = userRepository.findByEmail(signInDto.getEmail());
+        if (Objects.isNull(currentUser)) {
+            throw new AuthenticationFailException(MessageStrings.USER_NOT_FOUND);
+        }
+
+        // PW チェック
+        try {
+            if (!currentUser.getPassword().equals(hashPassword(signInDto.getPassword()))) {
+                throw new AuthenticationFailException(MessageStrings.WRONG_PASSWORD);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            logger.error("hashing password failed {}", e.getMessage());
+            throw new CustomException(e.getMessage());
+        }
+
+        // Token の発行
+        AuthenticationToken token = authenticationService.getToken(currentUser);
+        if(Objects.isNull(token)) {
+            throw new AuthenticationFailException(MessageStrings.AUTH_TOKEN_NOT_PRESENT);
+        }
+        return new SignInResponseDto("success", token.getToken());
+    }
+
 
     String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");

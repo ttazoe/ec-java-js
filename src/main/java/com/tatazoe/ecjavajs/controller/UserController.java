@@ -1,7 +1,10 @@
 package com.tatazoe.ecjavajs.controller;
 
+import com.tatazoe.ecjavajs.dto.SignInDto;
+import com.tatazoe.ecjavajs.dto.SignInResponseDto;
 import com.tatazoe.ecjavajs.dto.SignUpResponseDto;
 import com.tatazoe.ecjavajs.dto.SignupDto;
+import com.tatazoe.ecjavajs.exception.AuthenticationFailException;
 import com.tatazoe.ecjavajs.exception.CustomException;
 import com.tatazoe.ecjavajs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +22,10 @@ public class UserController {
     @PostMapping("/signup")
     public SignUpResponseDto signUp(@RequestBody SignupDto signupDto) throws CustomException {
         return userService.singUp(signupDto);
+    }
+
+    @PostMapping("/signIn")
+    public SignInResponseDto SignIn(@RequestBody SignInDto signInDto) throws AuthenticationFailException,CustomException{
+        return userService.signIn(signInDto);
     }
 }
