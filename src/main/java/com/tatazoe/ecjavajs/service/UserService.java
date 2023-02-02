@@ -85,6 +85,10 @@ public class UserService {
         return new SignInResponseDto("success", token.getToken());
     }
 
+    public User readUser(int userId) {
+        return userRepository.findById(userId);
+    }
+
 
     String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
